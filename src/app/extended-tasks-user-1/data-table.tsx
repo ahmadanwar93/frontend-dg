@@ -189,7 +189,7 @@ export function DataTable<TData, TValue>({
                                         ...createFormData, "category": value
                                     })}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={createFormData.category} />
+                                        <SelectValue placeholder={"Select a category"} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="Electronics">Electronics</SelectItem>

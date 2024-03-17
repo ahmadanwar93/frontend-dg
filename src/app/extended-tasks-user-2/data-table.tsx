@@ -183,14 +183,14 @@ export function DataTable<TData, TValue>({
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="category" className="text-right">
-                                    Category
+                                    Categories
                                 </Label>
                                 <Select onValueChange={(value) => setCreateFormData(
                                     {
                                         ...createFormData, "category": value
                                     })}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={createFormData.category} />
+                                        <SelectValue placeholder= "Select a category" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="Electronics">Electronics</SelectItem>
