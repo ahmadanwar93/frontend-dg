@@ -4,7 +4,7 @@ import { DataTable } from "./data-table"
 
 const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
 
-async function getData(): Promise<Payment[]> {
+async function getData() {
     try {
         const res = await fetch(
             `${BACKEND_API}/api/inventory`, {cache: 'no-store'}
