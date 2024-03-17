@@ -212,7 +212,7 @@ export function DataTable<TData, TValue>({
                                 {row.getVisibleCells().map((cell, index) => (
                                     <TableCell key={cell.id}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        {index === columns.length - 1 && (
+                                        {index === columns?.length - 1 && (
                                             <>
                                                 <Dialog open={isupdateFormOpen} onOpenChange={setUpdateFormOpen}>
                                                     <DialogTrigger asChild>
@@ -309,7 +309,7 @@ export function DataTable<TData, TValue>({
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
+                            <TableCell colSpan={columns?.length} className="h-24 text-center">
                                 No results.
                             </TableCell>
                         </TableRow>
