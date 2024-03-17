@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
     const [permissionData, setPermissionData] = useState([])
     
     const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
-    // const BACKEND_API = "https://dg-backend.fly.dev";
+     
 
     React.useEffect(() => {
         const fetchData = async () => {

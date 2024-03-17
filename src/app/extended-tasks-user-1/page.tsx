@@ -3,7 +3,7 @@ import { Payment, columns } from "./columns"
 import { DataTable } from "./data-table"
 
 const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
-// const BACKEND_API = "https://dg-backend.fly.dev";
+ 
 
 async function getData(): Promise<Payment[]> {
     try {
