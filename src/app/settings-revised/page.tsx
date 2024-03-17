@@ -13,12 +13,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useEffect, useState } from "react"
+const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
 
 
 export default function Permissions({ currentUser, permissions, userName }) {
-  // const [permissionData, setPermissionData] = useState([])
-  // const [currentUser, setUserId] = useState(3);
-  console.log(currentUser != 3)
   const [isOpen, setOpen] = useState(false);
   const [formData, setFormData] = useState({});
 
@@ -31,10 +29,12 @@ export default function Permissions({ currentUser, permissions, userName }) {
     });
     return found;
   }
+
   let isProductViewable = checkPermissionById(1);
   let isProductCreatable = checkPermissionById(2);
   let isProductEditable = checkPermissionById(3);
   let isProductDeletable = checkPermissionById(4);
+  
 
 
   return (
@@ -137,9 +137,7 @@ export default function Permissions({ currentUser, permissions, userName }) {
                 permissionBody.push(Number(key));
               }
             }
-            console.log(formData);
-            console.log(permissionBody);
-            await fetch("http://127.0.0.1:8000/api/3/permissions", {
+            await fetch(`${BACKEND_API}/api/${currentUser}/permissions`, {
               method: "PUT",
               headers: {
                 "Access-Control-Allow-Origin": "*",

@@ -71,12 +71,13 @@ export function DataTable<TData, TValue>({
             columnFilters
         },
     })
-
+    // const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
+    const BACKEND_API = "https://dg-backend.fly.dev";
 
 
     const deleteProduct = async function (id: number) {
         try {
-            let api = `http://127.0.0.1:8000/api/delete-inventory/${id}`;
+            let api = `${BACKEND_API}/api/delete-inventory/${id}`;
             const response = await fetch(api, {
                 method: 'DELETE',
                 headers: {
@@ -161,8 +162,7 @@ export function DataTable<TData, TValue>({
                         </div>
                         <DialogFooter>
                             <Button type="submit" onClick={async () => {
-                                console.log(createFormData);
-                                await fetch(`http://127.0.0.1:8000/api/add-inventory`, {
+                                await fetch(`${BACKEND_API}/api/add-inventory`, {
                                     method: "POST",
                                     headers: {
                                         "Access-Control-Allow-Origin": "*",
@@ -278,8 +278,7 @@ export function DataTable<TData, TValue>({
                                                         </div>
                                                         <DialogFooter>
                                                             <Button type="submit" onClick={async () => {
-                                                                console.log(updateFormData);
-                                                                await fetch(`http://127.0.0.1:8000/api/update-inventory/${updateFormData.id}`, {
+                                                                await fetch(`${BACKEND_API}/api/update-inventory/${updateFormData.id}`, {
                                                                     method: "PUT",
                                                                     headers: {
                                                                         "Access-Control-Allow-Origin": "*",

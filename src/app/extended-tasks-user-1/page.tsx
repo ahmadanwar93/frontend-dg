@@ -2,13 +2,15 @@ import { useRouter } from "next/router";
 import { Payment, columns } from "./columns"
 import { DataTable } from "./data-table"
 
+const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
+
 async function getData(): Promise<Payment[]> {
     try {
         const res = await fetch(
-            `http://127.0.0.1:8000/api/inventory?per-page=15`, {cache: 'no-store'}
+            `${BACKEND_API}/api/1/inventory`, {cache: 'no-store'}
         );
         const data = await res.json();
-        return data.data;
+        return data.data.data;
     } catch (err) {
         console.log(err);
     }
@@ -17,10 +19,9 @@ async function getData(): Promise<Payment[]> {
 const fetchData = async () => {
     try {
         const res = await fetch(
-            `http://127.0.0.1:8000/api/1/permissions`, { cache: 'no-store' }
+            `${BACKEND_API}/api/1/permissions`, { cache: 'no-store' }
         );
         const permissionData = await res.json();
-        console.log('abc')
     } catch (err) {
         console.log(err);
     }

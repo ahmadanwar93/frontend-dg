@@ -63,11 +63,13 @@ export function DataTable<TData, TValue>({
     const [userName, setUserName] = useState('')
     const [permissionData, setPermissionData] = useState([])
 
+    const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
+
     React.useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await fetch(
-                    `http://127.0.0.1:8000/api/2/permissions`, { cache: 'no-store' }
+                    `${BACKEND_API}/api/2/permissions`, { cache: 'no-store' }
                 );
                 const data = await res.json();
                 setUserName(data.data.name)
@@ -79,8 +81,7 @@ export function DataTable<TData, TValue>({
 
         fetchData();
     }, []);
-    // data = {}
-    // console.log(permissionData);
+    
 
     function checkPermissionById(id) {
         let found = false;
@@ -117,7 +118,7 @@ export function DataTable<TData, TValue>({
 
     const deleteProduct = async function (id: number) {
         try {
-            let api = `http://127.0.0.1:8000/api/delete-inventory/${id}`;
+            let api = `${BACKEND_API}/api/2/delete-inventory/${id}`;
             const response = await fetch(api, {
                 method: 'DELETE',
                 headers: {
@@ -202,8 +203,7 @@ export function DataTable<TData, TValue>({
                         </div>
                         <DialogFooter>
                             <Button type="submit" onClick={async () => {
-                                console.log(createFormData);
-                                await fetch(`http://127.0.0.1:8000/api/add-inventory`, {
+                                await fetch(`${BACKEND_API}/api/2/add-inventory`, {
                                     method: "POST",
                                     headers: {
                                         "Access-Control-Allow-Origin": "*",
@@ -324,8 +324,7 @@ export function DataTable<TData, TValue>({
                                                         </div>
                                                         <DialogFooter>
                                                             <Button type="submit" onClick={async () => {
-                                                                console.log(updateFormData);
-                                                                await fetch(`http://127.0.0.1:8000/api/update-inventory/${updateFormData.id}`, {
+                                                                await fetch(`${BACKEND_API}/api/2/update-inventory/${updateFormData.id}`, {
                                                                     method: "PUT",
                                                                     headers: {
                                                                         "Access-Control-Allow-Origin": "*",
