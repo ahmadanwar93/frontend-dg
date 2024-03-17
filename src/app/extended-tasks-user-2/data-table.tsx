@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
         };
 
         fetchData();
-    }, []);
+    }, [BACKEND_API]);
     
 
     function checkPermissionById(id) {

@@ -71,8 +71,7 @@ export function DataTable<TData, TValue>({
             columnFilters
         },
     })
-    // const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
-    const BACKEND_API = "https://dg-backend.fly.dev";
+    const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
 
 
     const deleteProduct = async function (id: number) {
