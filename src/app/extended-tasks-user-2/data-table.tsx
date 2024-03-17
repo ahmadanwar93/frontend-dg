@@ -81,11 +81,16 @@ export function DataTable<TData, TValue>({
 
         fetchData();
     }, [BACKEND_API]);
+
+    type Permission = {
+        id: number;
+        name: string;
+    };
     
 
     function checkPermissionById(id:number) {
         let found = false;
-        permissionData.forEach(obj => {
+        permissionData.forEach((obj:Permission) => {
             if (obj.hasOwnProperty('id') && obj.id === id) {
                 found = true;
             }

@@ -31,9 +31,14 @@ export default function Permissions({ currentUser, permissions, userName }: Prop
   const [isOpen, setOpen] = useState(false);
   const [formData, setFormData] = useState({});
 
+  type Permission = {
+    id: number;
+    name: string;
+};
+
   function checkPermissionById(id:number) {
     let found = false;
-    permissions.forEach(obj => {
+    permissions.forEach((obj:Permission) => {
       if (obj.hasOwnProperty('id') && obj.id === id) {
         found = true;
       }
