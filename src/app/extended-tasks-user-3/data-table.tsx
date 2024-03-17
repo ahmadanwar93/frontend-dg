@@ -43,6 +43,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import Permissions from "../settings-revised/page"
 
 
 interface DataTableProps<TData, TValue> {
@@ -58,6 +59,48 @@ export function DataTable<TData, TValue>({
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
+    const [isLoading, setLoading] = useState(true);
+    const [userName, setUserName] = useState('')
+    const [permissionData, setPermissionData] = useState([])
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch(
+                    `http://127.0.0.1:8000/api/3/permissions`, { cache: 'no-store' }
+                );
+                const data = await res.json();
+                setUserName(data.data.name)
+                setPermissionData(data.data.permissions);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        fetchData();
+    }, []);
+    // data = {}
+    // console.log(permissionData);
+
+    function checkPermissionById(id) {
+        let found = false;
+        permissionData.forEach(obj => {
+            if (obj.hasOwnProperty('id') && obj.id === id) {
+                found = true;
+            }
+        });
+        return found;
+    }
+    let isProductViewable = checkPermissionById(1);
+    let isProductCreatable = checkPermissionById(2);
+    let isProductEditable = checkPermissionById(3);
+    let isProductDeletable = checkPermissionById(4);
+
+    if (!isProductViewable) {
+        // If user does not have permission id 1 (view product listing, then will see empty table)
+        data = {};
+    }
+
     const table = useReactTable({
         data,
         columns,
@@ -71,8 +114,6 @@ export function DataTable<TData, TValue>({
             columnFilters
         },
     })
-
-
 
     const deleteProduct = async function (id: number) {
         try {
@@ -107,7 +148,7 @@ export function DataTable<TData, TValue>({
                 />
                 <Dialog open={isCreateFormOpen} onOpenChange={setCreateFormOpen}>
                     <DialogTrigger asChild>
-                        <Button variant="outline" className="mr-4">Add a  product</Button>
+                        <Button variant="outline" className="mr-4" disabled={!isProductCreatable}>Add a  product</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
@@ -183,6 +224,9 @@ export function DataTable<TData, TValue>({
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
+                <Permissions currentUser="3" permissions = {permissionData} userName={userName}/>
+
+                <p className="ml-3">User 3</p>
             </div>
             <Table>
                 <TableHeader>
@@ -224,7 +268,9 @@ export function DataTable<TData, TValue>({
                                                                 "title": row.original.title,
                                                                 "category": row.original.category,
                                                             })
-                                                        }>Edit/ View</Button>
+
+                                                        }
+                                                            disabled={!isProductEditable}>Edit/ View</Button>
                                                     </DialogTrigger>
                                                     <DialogContent className="sm:max-w-[425px]">
                                                         <DialogHeader>
@@ -302,7 +348,8 @@ export function DataTable<TData, TValue>({
                                                 </Dialog>
                                                 <Button variant="destructive" onClick={() => {
                                                     deleteProduct(row.original.id);
-                                                }}>Delete</Button>
+                                                }}
+                                                    disabled={!isProductDeletable}>Delete</Button>
                                             </>
                                         )}
                                     </TableCell>

@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useEffect, useState } from "react"
 
 
-export default function Page() {
+export default function Permissions() {
     const [permissionData, setPermissionData] = useState([])
     const [userId, setUserId] = useState(3);
     const [isLoading, setLoading] = useState(true);

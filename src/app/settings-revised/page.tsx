@@ -1,127 +1,166 @@
 "use client"
-
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { toast } from "@/components/ui/use-toast"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useEffect, useState } from "react"
 
-const items = [
-  {
-    id: "recents",
-    label: "Recents",
-  },
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "applications",
-    label: "Applications",
-  },
-  {
-    id: "desktop",
-    label: "Desktop",
-  },
-  {
-    id: "downloads",
-    label: "Downloads",
-  },
-  {
-    id: "documents",
-    label: "Documents",
-  },
-] as const
 
-const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
-})
+export default function Permissions({ currentUser, permissions, userName }) {
+  // const [permissionData, setPermissionData] = useState([])
+  // const [currentUser, setUserId] = useState(3);
+  console.log(currentUser != 3)
+  const [isOpen, setOpen] = useState(false);
+  const [formData, setFormData] = useState({});
 
-export default function CheckboxReactHookFormMultiple() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      items: ["recents", "home"],
-    },
-  })
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  function checkPermissionById(id) {
+    let found = false;
+    permissions.forEach(obj => {
+      if (obj.hasOwnProperty('id') && obj.id === id) {
+        found = true;
+      }
+    });
+    return found;
   }
+  let isProductViewable = checkPermissionById(1);
+  let isProductCreatable = checkPermissionById(2);
+  let isProductEditable = checkPermissionById(3);
+  let isProductDeletable = checkPermissionById(4);
+
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="items"
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-base">Sidebar</FormLabel>
-                <FormDescription>
-                  Select the items you want to display in the sidebar.
-                </FormDescription>
-              </div>
-              {items.map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name="items"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.id}
-                        className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item.id])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== item.id
-                                    )
-                                  )
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              ))}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Edit Profile</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Edit permissions</DialogTitle>
+          <DialogDescription>
+            Make changes to the permission here. Only user id 3 are allowed to make changes.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="currentUser" className="text-right">
+              User Id
+            </Label>
+            <Input
+              disabled
+              id="currentUser"
+              defaultValue={currentUser}
+              className="col-span-3"
+            />
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input
+              disabled
+              id="name"
+              defaultValue={userName}
+              className="col-span-3"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox id="permission1" disabled={currentUser != 3} onCheckedChange={
+              (checked) => setFormData({
+                ...formData,
+                1: checked,
+              }
+              )
+            }
+              defaultChecked={isProductViewable} />
+            <label
+              htmlFor="permission1"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              View product
+            </label>
+            <Checkbox id="permission2" disabled={currentUser != 3} onCheckedChange={
+              (checked) => setFormData({
+                ...formData,
+                2: checked,
+              }
+              )
+            } 
+            defaultChecked={isProductCreatable}/>
+            <label
+              htmlFor="permission2"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Create product
+            </label>
+            <Checkbox id="permission3" disabled={currentUser != 3} onCheckedChange={
+              (checked) => setFormData({
+                ...formData,
+                3: checked,
+              }
+              )
+            } 
+            defaultChecked={isProductEditable}/>
+            <label
+              htmlFor="permission3"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Edit product
+            </label>
+            <Checkbox id="permission4" disabled={currentUser != 3} onCheckedChange={
+              (checked) => setFormData({
+                ...formData,
+                4: checked,
+              }
+              )
+            } 
+            defaultChecked={isProductDeletable}/>
+            <label
+              htmlFor="permission4"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Delete product
+            </label>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit" onClick={async () => {
+            let permissionBody = [];
+            for (let key in formData) {
+              if (formData[key] == true) {
+                permissionBody.push(Number(key));
+              }
+            }
+            console.log(formData);
+            console.log(permissionBody);
+            await fetch("http://127.0.0.1:8000/api/3/permissions", {
+              method: "PUT",
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                "permissions": permissionBody
+              }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                setOpen(false);
+                setFormData({});
+                return response.json();
+              })
+          }}
+          disabled={currentUser != 3}>Save changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
