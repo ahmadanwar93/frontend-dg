@@ -15,8 +15,19 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useEffect, useState } from "react"
 const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
 
+interface Permission {
+  id: number;
+  name: string;
+}
 
-export default function Permissions({ currentUser, permissions, userName }) {
+interface Props {
+  currentUser: string;
+  permissions: Permission[],
+  userName:string
+}
+
+
+export default function Permissions({ currentUser, permissions, userName }: Props) {
   const [isOpen, setOpen] = useState(false);
   const [formData, setFormData] = useState({});
 
