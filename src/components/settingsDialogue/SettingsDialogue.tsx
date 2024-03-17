@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useEffect, useState } from "react"
-// const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
-const BACKEND_API = "https://dg-backend.fly.dev";
+const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API;
+// const BACKEND_API = "https://dg-backend.fly.dev";
 
 interface Permission {
   id: number;
