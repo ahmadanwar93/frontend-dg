@@ -59,7 +59,6 @@ export function DataTable<TData, TValue>({
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
-    const [isLoading, setLoading] = useState(true);
     const [userName, setUserName] = useState('')
     const [permissionData, setPermissionData] = useState([])
     
@@ -104,7 +103,7 @@ export function DataTable<TData, TValue>({
 
     if (!isProductViewable) {
         // If user does not have permission id 1 (view product listing, then will see empty table)
-        data = {};
+        data = [];
     }
 
     const table = useReactTable({

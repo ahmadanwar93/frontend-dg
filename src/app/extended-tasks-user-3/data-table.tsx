@@ -103,7 +103,7 @@ export function DataTable<TData, TValue>({
 
     if (!isProductViewable) {
         // If user does not have permission id 1 (view product listing, then will see empty table)
-        data = {};
+        data = [];
     }
 
     const table = useReactTable({
